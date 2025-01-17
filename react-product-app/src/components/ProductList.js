@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const baseURL = 'https://localhost:7051/Producto';
 
 
+
 class ProductList extends React.Component {
   state = {
     data: [],
@@ -75,6 +76,14 @@ class ProductList extends React.Component {
     var idProducto =  this.state.form.id;
     await axios.delete(baseURL + "/" + idProducto).then(response => {  
       console.log(response);
+
+      if(!response.data.success){
+        this.Mensaje(response.data.errorMessage);
+      }else{
+        this.Mensaje("Producto eliminado con exito");
+      }
+
+
       this.peticionGet();
       this.ocultarModalEliminar();
     })
@@ -91,6 +100,11 @@ class ProductList extends React.Component {
          [e.target.name]: e.target.value,
       }
     })
+  }
+
+  
+  Mensaje =(mensaje)=>{
+    this.setState({modalMensaje: true, mensaje});
   }
 
   ocultarModalMensaje =()=>{
